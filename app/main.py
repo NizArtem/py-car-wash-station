@@ -24,20 +24,17 @@ class CarWashStation:
 
     def calculate_washing_price(self, car: Car) -> float:
         difference_purity = self.clean_power - car.clean_mark
-        coefficient_of_price = (
-            difference_purity
-            * self.average_rating
-            * car.comfort_class
-        )
+        part_of_price = self.average_rating * car.comfort_class
+        coefficient_of_price = part_of_price * difference_purity
         return round(coefficient_of_price / self.distance_from_city_center, 1)
 
     def wash_single_car(self, car: Car) -> None:
         if self.possibility_washing(car):
             car.clean_mark = self.clean_power
 
-    def rate_service(self, mark: int) -> None:
-        all_marks = (self.average_rating * self.count_of_ratings) + mark
-        self.average_rating = round(all_marks / (self.count_of_ratings + 1), 1)
+    def rate_service(self, rate: float) -> None:
+        all_rates = (self.average_rating * self.count_of_ratings) + rate
+        self.average_rating = round(all_rates / (self.count_of_ratings + 1), 1)
         self.count_of_ratings += 1
 
     def possibility_washing(self, car: Car) -> bool:
